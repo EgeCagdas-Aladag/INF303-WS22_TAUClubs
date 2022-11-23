@@ -13,9 +13,9 @@ class Club(models.Model):
     clubMail = models.EmailField()
 
 class Post(models.Model):
-    postId: models.CharField(primary_key=True)
-    name: models.CharField(validators=MinLengthValidator(2,"Name must be grater than 1 character"))
-    postdate: models.DateField()
-    clubname: models.ForeignKey('Club', on_delete=models.CASCADE, null=False)
-    description: models.TextField(max_length=700)
-    type: models.CharField()
+    postId= models.CharField(primary_key=True)
+    name= models.CharField(validators=MinLengthValidator(2,"Name must be grater than 1 character"))
+    postdate= models.DateField()
+    clubname= models.ForeignKey('Club', on_delete=models.CASCADE, null=False)
+    description= models.TextField(max_length=700)
+    type= models.CharField()
