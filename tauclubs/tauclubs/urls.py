@@ -25,7 +25,8 @@ router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/auth/', include('rest_framework.urls'))
+    path('api/auth/', include('rest_framework.urls')),
+    path(r'^rest-auth/', include('rest_auth.urls'))
 ]
 
 urlpatterns += router.urls
