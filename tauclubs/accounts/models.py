@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth import models as auth_models
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, first_name: str, last_name: str, email: str, password: str = None, is_staff = False, is_superuser=False) -> "User":
+    def create_user(self, first_name, last_name, email, password, is_staff = False, is_superuser=False) -> "User":
         if not email:
             raise ValueError("User must have an email")
         if not first_name:
@@ -14,7 +14,8 @@ class UserManager(BaseUserManager):
         if not last_name:
             raise ValueError("User must have a last name")
         
-        user = self.model(email = self.normalize_email(email))
+        email = self.normalize_email(email)
+        user = self.model(email = email)
 
         user.first_name = first_name
         user.last_name = last_name
@@ -41,14 +42,12 @@ class UserManager(BaseUserManager):
         return user
        
 
-
-class User(auth_models.AbstractUser):
-    first_name = models.CharField(verbose_name="First Name", max_length=255)
-    last_name = models.CharField(verbose_name="Last Name", max_length=255)
-    email = models.EmailField(verbose_name="Email", max_length=255, unique=True)
-    password = models.CharField(max_length=255)
-    #username = None
-
+class User(AbstractUser):
+    username = None
+    first_name = models.CharField(verbose_name="First Name", max_length=255, null=False)
+    last_name = models.CharField(verbose_name="Last Name", max_length=255, null=False)
+    email = models.EmailField(verbose_name="Email", max_length=255, unique=True, null=False)
+    password = models.CharField(max_length=255, null=False)
     
 
     USERNAME_FIELD = "email"
