@@ -49,6 +49,14 @@ class User(AbstractUser):
     email = models.EmailField(verbose_name="Email", max_length=255, unique=True, null=False)
     password = models.CharField(max_length=255, null=False)
     
+    ROLE_CHOICES = [
+        ('A', 'Admin'),
+        ('U', 'User'),
+        ('CM', 'Club Manager'),
+        ('M', 'Member'),
+    ]
+
+    role = models.CharField(max_length=2, choices=ROLE_CHOICES, default='U')
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
