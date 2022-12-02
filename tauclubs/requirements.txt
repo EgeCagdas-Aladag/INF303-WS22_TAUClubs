@@ -3,3 +3,4 @@ djangorestframework
 markdown
 django-validators
 django-rest-auth
+django-allauth
