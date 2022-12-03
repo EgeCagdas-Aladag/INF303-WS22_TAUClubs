@@ -5,8 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Club
-from .serializers import ClubSerializer
+from .models import Club, Post
+from .serializers import ClubSerializer, PostSerializer
 
 
 # Create your views here.
@@ -30,6 +30,6 @@ class PostViewSet(viewsets.ModelViewSet):
     """
     A simple viewset for viewing and editing posts.
     """
-    queryset = Club.objects.all()
-    serializer_class = ClubSerializer 
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
     permission_classes = []

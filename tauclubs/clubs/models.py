@@ -14,6 +14,10 @@ class Club(models.Model):
     clubMail = models.EmailField()
     followers = models.ManyToManyField(User, blank=True, null=True, related_name='+')
 
+    def __str__(self):
+        return self.name
+
+
 class Post(models.Model):
     postId= models.CharField(max_length=256, primary_key=True)
     # name= models.CharField(validators=MinLengthValidator(2,"Name must be grater than 1 character"))
@@ -22,3 +26,6 @@ class Post(models.Model):
     clubname= models.ForeignKey('Club', on_delete=models.CASCADE, null=False)
     description= models.TextField(max_length=700)
     type= models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.name
