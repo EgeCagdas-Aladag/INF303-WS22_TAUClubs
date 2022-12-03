@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from tauclubs.clubs.models import Club
-from tauclubs.clubs.models import Post
+from .models import Club
+from .models import Post
 
 class ClubSerializer(serializers.ModelSerializer):
     class Meta:

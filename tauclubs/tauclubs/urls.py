@@ -20,8 +20,12 @@ from django.urls import path, include
 
 from accounts.views import UserViewSet
 
+from clubs.views import ClubViewSet, PostViewSet
+
 router = routers.SimpleRouter()
 router.register(r'users', UserViewSet)
+router.register(r'clubs', ClubViewSet)
+router.register(r'posts', PostViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

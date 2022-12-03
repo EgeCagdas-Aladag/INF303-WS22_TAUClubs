@@ -14,5 +14,5 @@ class UserViewSet(viewsets.ModelViewSet):
     A simple viewset for viewing and editing accounts.
     """
     queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer # Serializer not created yet
+    serializer_class = UserSerializer 
     permission_classes = []
