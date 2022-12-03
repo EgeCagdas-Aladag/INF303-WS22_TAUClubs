@@ -1,7 +1,7 @@
 from django.db import models
 from accounts.models import User
 
-from django.core.validators import MinLengthValidator
+# from django.core.validators import MinLengthValidator
 
 # Create your models here.
 
