@@ -5,7 +5,7 @@ from .models import Post
 class ClubSerializer(serializers.ModelSerializer):
     class Meta:
         model = Club
-        fields = ['name', 'manager', 'members', 'responsibleLecturer', 'clubMail']
+        fields = ['name', 'manager', 'members', 'pending_members','responsibleLecturer', 'clubMail', 'followers']
 
 
 class PostSerializer(serializers.ModelSerializer):
