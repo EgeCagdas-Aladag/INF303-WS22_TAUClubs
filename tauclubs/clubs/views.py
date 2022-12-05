@@ -26,6 +26,22 @@ class ClubViewSet(viewsets.ModelViewSet):
 
         return Response(status=201)
 
+    @action(detail=True, methods=['post', 'get'], permission_classes=[IsAuthenticated])
+    def follow(self, request, pk=None):
+        user = request.user
+        club = self.get_object()
+        club.followers.add(user)
+
+        return Response(status=200)
+
+    @action(detail=True, methods=['post', 'get'], permission_classes=[IsAuthenticated])
+    def unfollow(self, request, pk=None):
+        user = request.user
+        club = self.get_object()
+        club.followers.remove(user)
+
+        return Response(status=200)
+
 class PostViewSet(viewsets.ModelViewSet):
     """
     A simple viewset for viewing and editing posts.
