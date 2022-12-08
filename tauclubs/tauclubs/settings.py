@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-f39qv5k)due3ww+x==*1$pwndzi3riu68z++in_d)l+#!is7%#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+CORS_ALLOWED_ORIGINS = ['*']
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None

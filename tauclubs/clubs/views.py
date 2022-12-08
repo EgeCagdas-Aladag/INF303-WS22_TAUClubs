@@ -35,6 +35,19 @@ class ClubViewSet(viewsets.ModelViewSet):
         return Response(status=200)
 
     @action(detail=True, methods=['post', 'get'], permission_classes=[IsAuthenticated])
+    def admit_member(self, request, pk=None):
+        club = self.get_object()
+        if request.user == club.manager:
+
+            data = request.data
+            member = data["user"]
+            
+            club.members.add(member)
+            club.pending_members.remove(member)
+
+        return Response(status=201)
+
+    @action(detail=True, methods=['post', 'get'], permission_classes=[IsAuthenticated])
     def unfollow(self, request, pk=None):
         user = request.user
         club = self.get_object()
