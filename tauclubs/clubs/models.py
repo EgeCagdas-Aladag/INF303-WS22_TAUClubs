@@ -22,7 +22,7 @@ class Post(models.Model):
     postId= models.CharField(max_length=256, primary_key=True)
     # name= models.CharField(validators=MinLengthValidator(2,"Name must be grater than 1 character"))
     name= models.CharField(max_length=256)
-    postdate= models.DateField()
+    postdate= models.DateTimeField(auto_now_add=True)
     clubname= models.ForeignKey('Club', on_delete=models.CASCADE, null=False)
     description= models.TextField(max_length=700)
     type= models.CharField(max_length=256)

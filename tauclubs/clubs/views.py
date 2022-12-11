@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Club, Post
 from .serializers import ClubSerializer, PostSerializer
-
+from .forms import PostForm
 
 # Create your views here.
 class ClubViewSet(viewsets.ModelViewSet):
@@ -62,3 +62,13 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = []
+
+    @action(detail=True, methods=['post', 'get'], permission_classes=[IsAuthenticated])
+    def get_all_post(self, request, pk=None):
+        return Post.objects.order_by('postdate')
+
+    @action(detail=True, methods=['post', 'get'], permission_classes=[IsAuthenticated])
+    def get_followed_post(self, request, pk=None):
+        user = self.request.user
+        club= Club.objects.filter(members=user)
+        return Post.objects.filter(clubname=club)
