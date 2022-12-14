@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Club, Post
 from .serializers import ClubSerializer, PostSerializer
-
+from rest_framework.filters import SearchFilter
 
 # Create your views here.
 class ClubViewSet(viewsets.ModelViewSet):
@@ -59,6 +59,11 @@ class PostViewSet(viewsets.ModelViewSet):
     """
     A simple viewset for viewing and editing posts.
     """
-    queryset = Post.objects.all()
+    queryset=Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = []
+    filter_backends= [SearchFilter]  
+    search_fields=['clubname__id']  #search posts by id of the clubs by using /?search=id
+
+    
+
