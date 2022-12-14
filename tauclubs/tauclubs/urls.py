@@ -20,12 +20,18 @@ from django.urls import path, include
 
 from accounts.views import UserViewSet
 
+from clubs.views import ClubViewSet, PostViewSet
+
 router = routers.SimpleRouter()
 router.register(r'users', UserViewSet)
+router.register(r'clubs', ClubViewSet)
+router.register(r'posts', PostViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/auth/', include('rest_framework.urls'))
+    path('api/auth/', include('rest_framework.urls')),
+    path(r'^rest-auth/', include('rest_auth.urls')),
+    path(r'^rest-auth/registration/', include('rest_auth.registration.urls'))
 ]
 
 urlpatterns += router.urls

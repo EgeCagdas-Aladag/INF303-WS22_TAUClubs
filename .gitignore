@@ -3,3 +3,4 @@
 *.sqlite3
 *.pyc
 tauclubs/tauclubs/__pycache__/settings.cpython-310.pyc
+*.pyc
