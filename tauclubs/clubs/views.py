@@ -25,6 +25,14 @@ class ClubViewSet(viewsets.ModelViewSet):
         club.pending_members.add(user)
 
         return Response(status=201)
+    
+    @action(detail=True, methods=['post', 'get'], permission_classes=[IsAuthenticated])
+    def manager(self, request, pk=None):
+        user = request.user
+        club = self.get_object()
+        club.pending_manager.add(user)
+
+        return Response(status=201)
 
     @action(detail=True, methods=['post', 'get'], permission_classes=[IsAuthenticated])
     def follow(self, request, pk=None):

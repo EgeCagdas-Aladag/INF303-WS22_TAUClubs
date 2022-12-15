@@ -104,16 +104,16 @@ class CreatePostTestCase(TestCase):
 
     #Manager Kontroll
 
-    def test_membership(self):
+    def test_managerKontrol(self):
 
         self.response = self.client.login(email='student4@hotmail.com',password='pass@123')
 
         self.assertEqual(self.response, True)
 
-        self.response = self.client.get("/clubs/" + str(self.club.id) + "/membership/")
+        self.response = self.client.get("/clubs/" + str(self.club.id) + "/manager/")
         
         self.assertEqual(201, self.response.status_code)
-        self.assertEqual(self.user in self.club.Post.objects.all(), True)
+        self.assertEqual(self.user in self.club.manager.all(), True)
 
     #Post teilen in der Clubseite
 
@@ -139,10 +139,11 @@ class CreatePostTestCase(TestCase):
     def test_newInfo(self):
         
         # Checking new member information
-        self.response = self.client.get("/clubs/" + str(self.club.id) + "/membership/")
+        self.response = self.client.get("/clubs/" + str(self.club.id) + "/pending_members/")
         
         self.assertEqual(201, self.response.status_code)
         self.assertEqual(self.user in self.club.pending_members.all(), True)
 
     # Club manager delete and chance members
+    
     
