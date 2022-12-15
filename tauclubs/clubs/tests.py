@@ -1,3 +1,4 @@
+import json
 from django.test import Client, TestCase
 from accounts.models import User
 from .models import Club
@@ -10,10 +11,52 @@ class ClubTestCase(TestCase):
 
     def setUp(self):
 
+        self.admin = User.objects.create_superuser(email="admin@stud.tau.edu.tr", password="admin@123", first_name="Admin", last_name="Super")
+
         self.user = User.objects.create_user(email="student4@hotmail.com", password="pass@123", first_name="user", last_name="user")
 
         self.club = Club.objects.create(name="Informatix", manager=User.objects.create(email = "student3@hotmail.com"))
+    
+    def test_create_club(self):
+        response_ = self.client.get('/admin/', follow=True)
+        self.response = self.client.login(email="admin@stud.tau.edu.tr", password="admin@123")
+   
+        self.assertTrue(self.response)
+        
+        club_data = {
+            "name": "Test Club",
+            "manager": self.user.id,
+            "members": [],
+            "pending_members": [],
+            "responsibleLecturer": "Test Lecturer",
+            "clubMail": "testclub@stud.tau.edu.tr",
+            "followers": []
+        }
 
+        self.response = self.client.post("/clubs/", data=club_data)
+        self.assertEqual(201, self.response.status_code)
+
+        clubs = Club.objects.all()
+        control = [True for id in range(0,len(clubs)) if clubs[id].name == "Test Club"]
+        self.assertTrue(True in control)
+
+
+    def test_update_club_infos_byadmin(self):
+        
+        response_ = self.client.get('/admin/', follow=True)
+        self.response = self.client.login(email="admin@stud.tau.edu.tr", password="admin@123")
+
+        self.assertTrue(self.response)
+
+        data = {"name" : "INFX"}
+
+        self.response = self.client.patch("/clubs/" + str(self.club.id) + "/", data=data, format='json', content_type='application/json')
+        
+        clubs = Club.objects.all()
+   
+        self.assertEqual(200, self.response.status_code)
+        self.assertEqual(clubs[self.club.id - 1].name, data['name'])
+        
     def test_membership(self):
 
         self.response = self.client.login(email='student4@hotmail.com',
