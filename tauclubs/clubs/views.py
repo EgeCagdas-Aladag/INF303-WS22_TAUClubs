@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from .models import Club, Post
 from .serializers import ClubSerializer, PostSerializer
 from rest_framework.filters import SearchFilter
+from django.core.serializers import serialize
 
 # Create your views here.
 class ClubViewSet(viewsets.ModelViewSet):
@@ -76,3 +77,22 @@ class PostViewSet(viewsets.ModelViewSet):
 
     
 
+    @action(detail=False, methods=['post', 'get'], permission_classes=[IsAuthenticated])
+    def get_followed_clubs_posts(self, request, pk=None):
+
+        theclub = None 
+        clubs = Club.objects.all() 
+        queryset = Club.objects.none() 
+        for i in clubs:
+            print(clubs)
+            if request.user in i.followers.all(): 
+                
+                queryset |= Club.objects.filter(pk=i.pk)
+        
+        list= []
+        for a in queryset:
+            list.append(a.id)
+        queryset2=Post.objects.filter(clubname__pk__in=list)
+        #queryset2 |= Post.objects.filter(pk=a.pk)
+        qs_json = serialize('json', queryset=queryset2)
+        return Response(data=qs_json , status=200)
