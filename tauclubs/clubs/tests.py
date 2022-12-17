@@ -22,7 +22,8 @@ class ClubTestCase(TestCase):
         self.response = self.client.login(email="admin@stud.tau.edu.tr", password="admin@123")
    
         self.assertTrue(self.response)
-        
+        print("client.login(): " + str(self.response))
+
         club_data = {
             "name": "Test Club",
             "manager": self.user.id,
@@ -35,11 +36,12 @@ class ClubTestCase(TestCase):
 
         self.response = self.client.post("/clubs/", data=club_data)
         self.assertEqual(201, self.response.status_code)
+        print("POST-Request: " + str(self.response.status_code))
 
         clubs = Club.objects.all()
         control = [True for id in range(0,len(clubs)) if clubs[id].name == "Test Club"]
         self.assertTrue(True in control)
-
+        print("Neue Club erstellt: " + str(control[0]) + ": " + str(clubs[0]))
 
     def test_update_club_infos_byadmin(self):
         
@@ -47,15 +49,19 @@ class ClubTestCase(TestCase):
         self.response = self.client.login(email="admin@stud.tau.edu.tr", password="admin@123")
 
         self.assertTrue(self.response)
+        print("client.login(): " + str(self.response))
 
         data = {"name" : "INFX"}
 
         self.response = self.client.patch("/clubs/" + str(self.club.id) + "/", data=data, format='json', content_type='application/json')
-        
         clubs = Club.objects.all()
    
         self.assertEqual(200, self.response.status_code)
+        print("PATCH-Request: " + str(self.response.status_code))
+
         self.assertEqual(clubs[self.club.id - 1].name, data['name'])
+        print("Aktualisiert: " + str(clubs[self.club.id - 1]))
+
         
     def test_membership(self):
 
@@ -63,11 +69,14 @@ class ClubTestCase(TestCase):
             password='pass@123')
 
         self.assertEqual(self.response, True)
+        print("client.login(): " + str(self.response))
 
         self.response = self.client.get("/clubs/" + str(self.club.id) + "/membership/")
         
         self.assertEqual(201, self.response.status_code)
+        print("GET-Request: " + str(self.response.status_code))
         self.assertEqual(self.user in self.club.pending_members.all(), True)
+        print("Membership Request: " + str(self.user in self.club.pending_members.all()))
 
     def test_follow(self):
         
@@ -75,11 +84,14 @@ class ClubTestCase(TestCase):
             password='pass@123')
 
         self.assertEqual(self.response, True)
-        
+        print("clint.login(): " + str(self.response))
+
         self.response = self.client.get("/clubs/" + str(self.club.id) + "/follow/")
+        print("GET-Request: " + str(self.response.status_code))
 
         self.assertEqual(200, self.response.status_code)
         self.assertEqual(self.user in self.club.followers.all(), True)
+        print("Followed: " + str(self.user in self.club.followers.all()))
 
     def test_unfollow(self):
 
@@ -87,11 +99,14 @@ class ClubTestCase(TestCase):
             password='pass@123')
 
         self.assertEqual(self.response, True)
+        print("clint.login(): " + str(self.response))
         
         self.response = self.client.get("/clubs/" + str(self.club.id) + "/unfollow/")
+        print("GET-Request: " + str(self.response.status_code))
 
         self.assertEqual(200, self.response.status_code)
         self.assertEqual(self.user not in self.club.followers.all(), True)
+        print("Unfollowed: " + str(self.user not in self.club.followers.all()))
 
 class PostTestCase(TestCase):
 
