@@ -12,6 +12,7 @@ class CreateUserTestCase(TestCase):
 
 
     def test_sign_up_user(self):
+        print("\ntest_sign_up_user")
         
         userdata=  {
             "email": [
@@ -34,6 +35,7 @@ class CreateUserTestCase(TestCase):
         print("Erstellte User: "+ str(users[1].email))
 
     def test_login(self):
+        print("\ntest_login")
 
         self.response = self.client.login(email="student4@hotmail.com", password="pass@123")
    
@@ -41,6 +43,7 @@ class CreateUserTestCase(TestCase):
         print("Logged-in: "+ str(self.response))
 
     def test_update_user(self):
+        print("\ntest_update_user")
 
         self.response = self.client.login(email="student4@hotmail.com", password="pass@123")
 

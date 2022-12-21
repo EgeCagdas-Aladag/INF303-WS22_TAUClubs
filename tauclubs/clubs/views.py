@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from tauclubs.permissions import IsClubManagerReadOn 
+from tauclubs.permissions import IsClubManagerOrReadOnly 
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -71,11 +71,10 @@ class PostViewSet(viewsets.ModelViewSet):
     """
     queryset=Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsClubManagerReadOn]
+    permission_classes = [IsClubManagerOrReadOnly]
     filter_backends= [SearchFilter]  
     search_fields=['clubname__id']  #search posts by id of the clubs by using /?search=id
 
-    
 
     @action(detail=False, methods=['post', 'get'], permission_classes=[IsAuthenticated])
     def get_followed_clubs_posts(self, request, pk=None):

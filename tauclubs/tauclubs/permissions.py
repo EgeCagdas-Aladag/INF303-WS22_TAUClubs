@@ -3,7 +3,7 @@ from pprint import pprint
 from clubs.models import Club
 from accounts.models import User
 
-class IsClubManagerReadOn(permissions.BasePermission):
+class IsClubManagerOrReadOnly(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
 
@@ -15,5 +15,5 @@ class IsClubManagerReadOn(permissions.BasePermission):
         
        if request.method in permissions.SAFE_METHODS:
             return True
-        
-       return theclub ==object.clubname
+
+       return theclub ==obj.clubname.id

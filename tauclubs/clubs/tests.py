@@ -18,6 +18,7 @@ class ClubTestCase(TestCase):
         self.club = Club.objects.create(name="Informatix", manager=User.objects.create(email = "student3@hotmail.com"))
     
     def test_create_club(self):
+        print("\ntest_create_club")
         response_ = self.client.get('/admin/', follow=True)
         self.response = self.client.login(email="admin@stud.tau.edu.tr", password="admin@123")
    
@@ -44,6 +45,7 @@ class ClubTestCase(TestCase):
         print("Neue Club erstellt: " + str(control[0]) + ": " + str(clubs[0]))
 
     def test_update_club_infos_byadmin(self):
+        print("\ntest_update_club_infos_byadmin")
         
         response_ = self.client.get('/admin/', follow=True)
         self.response = self.client.login(email="admin@stud.tau.edu.tr", password="admin@123")
@@ -62,8 +64,8 @@ class ClubTestCase(TestCase):
         self.assertEqual(clubs[self.club.id - 1].name, data['name'])
         print("Aktualisiert: " + str(clubs[self.club.id - 1]))
 
-        
     def test_membership(self):
+        print("\ntest_membership")
 
         self.response = self.client.login(email='student4@hotmail.com',
             password='pass@123')
@@ -79,12 +81,13 @@ class ClubTestCase(TestCase):
         print("Membership Request: " + str(self.user in self.club.pending_members.all()))
 
     def test_follow(self):
+        print("\ntest_follow")
         
         self.response = self.client.login(email='student4@hotmail.com',
             password='pass@123')
 
         self.assertEqual(self.response, True)
-        print("clint.login(): " + str(self.response))
+        print("client.login(): " + str(self.response))
 
         self.response = self.client.get("/clubs/" + str(self.club.id) + "/follow/")
         print("GET-Request: " + str(self.response.status_code))
@@ -94,12 +97,13 @@ class ClubTestCase(TestCase):
         print("Followed: " + str(self.user in self.club.followers.all()))
 
     def test_unfollow(self):
+        print("\ntest_unfollow")
 
         self.response = self.client.login(email='student4@hotmail.com',
             password='pass@123')
 
         self.assertEqual(self.response, True)
-        print("clint.login(): " + str(self.response))
+        print("client.login(): " + str(self.response))
         
         self.response = self.client.get("/clubs/" + str(self.club.id) + "/unfollow/")
         print("GET-Request: " + str(self.response.status_code))
@@ -135,7 +139,8 @@ class PostTestCase(TestCase):
     #Post teilen in der Clubseite
 
     def test_create_post(self):
-
+        print("\ntest_create_post")
+    
        # client = APIClient()
        # client.force_authenticate(user=self.user) ## 
         self.response = self.client.login(email='student3@hotmail.com',
