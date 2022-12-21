@@ -13,9 +13,11 @@ class ClubTestCase(TestCase):
 
         self.admin = User.objects.create_superuser(email="admin@stud.tau.edu.tr", password="admin@123", first_name="Admin", last_name="Super")
 
-        self.user = User.objects.create_user(email="student4@hotmail.com", password="pass@123", first_name="user", last_name="user")
+        self.user = User.objects.create_user(email="student1@stud.tau.edu.tr", password="pass@123", first_name="user", last_name="user")
+        self.manager = User.objects.create_user(email="student2@stud.tau.edu.tr", password="pass@123", first_name="manager", last_name="user")
+        self.user2 = User.objects.create_user(email="student3@stud.tau.edu.tr", password="pass@123", first_name="user", last_name="user")
 
-        self.club = Club.objects.create(name="Informatix", manager=User.objects.create(email = "student3@hotmail.com"))
+        self.club = Club.objects.create(name="Informatix", manager=self.manager)
     
     def test_create_club(self):
         print("\ntest_create_club")
@@ -67,7 +69,7 @@ class ClubTestCase(TestCase):
     def test_membership(self):
         print("\ntest_membership")
 
-        self.response = self.client.login(email='student4@hotmail.com',
+        self.response = self.client.login(email='student1@stud.tau.edu.tr',
             password='pass@123')
 
         self.assertEqual(self.response, True)
@@ -83,7 +85,7 @@ class ClubTestCase(TestCase):
     def test_follow(self):
         print("\ntest_follow")
         
-        self.response = self.client.login(email='student4@hotmail.com',
+        self.response = self.client.login(email='student1@stud.tau.edu.tr',
             password='pass@123')
 
         self.assertEqual(self.response, True)
@@ -99,7 +101,7 @@ class ClubTestCase(TestCase):
     def test_unfollow(self):
         print("\ntest_unfollow")
 
-        self.response = self.client.login(email='student4@hotmail.com',
+        self.response = self.client.login(email='student1@stud.tau.edu.tr',
             password='pass@123')
 
         self.assertEqual(self.response, True)
@@ -111,6 +113,51 @@ class ClubTestCase(TestCase):
         self.assertEqual(200, self.response.status_code)
         self.assertEqual(self.user not in self.club.followers.all(), True)
         print("Unfollowed: " + str(self.user not in self.club.followers.all()))
+
+    def test_admit_member(self):
+        print("\ntest_admit_member")
+
+        self.response = self.client.login(email='student1@stud.tau.edu.tr',
+            password='pass@123')
+
+        self.assertEqual(self.response, True)
+        self.response = self.client.get("/clubs/" + str(self.club.id) + "/membership/")
+        self.client.logout()
+
+        #Non-Manager login and post request
+        print("Non-Manager login and POST-Request")
+        self.response = self.client.login(email='student3@stud.tau.edu.tr',
+            password='pass@123')
+
+        self.assertEqual(self.response, True)
+        print("client.login(): " + str(self.response))
+        
+        data = {"user" : "2"}
+
+        self.response = self.client.post("/clubs/" + str(self.club.id) + "/admit_member/", data=data, format='json', content_type='application/json')
+        print("POST-Request by Non-Manager: " + str(self.response.status_code))
+        self.assertEqual(403, self.response.status_code)
+
+        self.client.logout()
+
+        #Manager login and post request
+        print("Manager login and POST-Request")
+        self.response = self.client.login(email='student2@stud.tau.edu.tr',
+            password='pass@123')
+
+        self.assertEqual(self.response, True)
+        print("client.login(): " + str(self.response))
+        
+        data = {"user" : "2"}
+
+        self.response = self.client.post("/clubs/" + str(self.club.id) + "/admit_member/", data=data, format='json', content_type='application/json')
+        print("POST-Request by Club Manager: " + str(self.response.status_code))
+
+        self.assertEqual(201, self.response.status_code)
+        self.assertEqual(self.user in self.club.members.all(), True)
+        self.assertEqual(self.user not in self.club.pending_members.all(), True)
+        print("New member: " + str(self.user) + " in Club: " + str(self.club))
+     
 
 class PostTestCase(TestCase):
 

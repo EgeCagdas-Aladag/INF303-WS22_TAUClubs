@@ -55,7 +55,9 @@ class ClubViewSet(viewsets.ModelViewSet):
             club.members.add(member)
             club.pending_members.remove(member)
 
-        return Response(status=201)
+            return Response(status=201)
+        else:
+            return Response(status=403)
 
     @action(detail=True, methods=['post', 'get'], permission_classes=[IsAuthenticated])
     def unfollow(self, request, pk=None):
