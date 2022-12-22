@@ -53,12 +53,14 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'dj_rest_auth.registration',
+    'rest_auth.registration',
+    # 'dj_rest_auth.registration',
     'corsheaders',
     
     'rest_framework',
     'rest_framework.authtoken',
-    'dj_rest_auth',
+    'rest_auth',
+    # 'dj_rest_auth',
     
     'accounts',
     'clubs',
@@ -153,8 +155,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
 
     'DEFAULT_PERMISSION_CLASSES': [

@@ -30,8 +30,10 @@ router.register(r'posts', PostViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('rest_framework.urls')),
-    path(r'dj-rest-auth/', include('dj_rest_auth.urls')),
-    path(r'dj-rest-auth/registration/', include('dj_rest_auth.registration.urls'))
+    path(r'dj-rest-auth/', include('rest_auth.urls')),
+    path(r'dj-rest-auth/registration/', include('rest_auth.registration.urls'))
+    # path(r'dj-rest-auth/', include('dj_rest_auth.urls')),
+    # path(r'dj-rest-auth/registration/', include('dj_rest_auth.registration.urls'))
 ]
 
 urlpatterns += router.urls
