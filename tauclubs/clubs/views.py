@@ -94,9 +94,10 @@ class PostViewSet(viewsets.ModelViewSet):
         for a in queryset:
             list.append(a.id)
         queryset2=Post.objects.filter(clubname__pk__in=list)
+        serializer = PostSerializer(queryset2, many = True)
         #queryset2 |= Post.objects.filter(pk=a.pk)
-        qs_json = serialize('json', queryset=queryset2)
-        return Response(data=qs_json , status=200)
+        # qs_json = serialize('json', queryset=queryset2)
+        return Response(data=serializer.data , status=200)
 
     @action(detail=False, methods=['post', 'get'], permission_classes=[IsAuthenticated])
     def get_followed_clubs(self, request, pk=None):
@@ -110,5 +111,6 @@ class PostViewSet(viewsets.ModelViewSet):
                 
                 queryset |= Club.objects.filter(pk=i.pk)
         
-        qs_json = serialize('json', queryset=queryset)
-        return Response(data=qs_json , status=200)
+        # qs_json = serialize('json', queryset=queryset)
+        serializer = ClubSerializer(queryset, many = True)
+        return Response(data=serializer.data , status=200)
